@@ -1,0 +1,28 @@
+#prepare stage (Microsoft Container Registry => mcr)
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build-dev
+WORKDIR /src
+
+COPY ["SchoolProject.Api/SchoolProject.Api.csproj", "SchoolProject.Api/"]
+COPY ["SchoolProject.Core/SchoolProject.Core.csproj", "SchoolProject.Core/"]
+COPY ["SchoolProject.Data/SchoolProject.Data.csproj", "SchoolProject.Data/"]
+COPY ["SchoolProject.Infrustructure/SchoolProject.Infrustructure.csproj", "SchoolProject.Infrustructure/"]
+COPY ["SchoolProject.Service/SchoolProject.Service.csproj", "SchoolProject.Service/"]
+COPY ["SchoolProject.XUnitTest/SchoolProject.XUnitTest.csproj", "SchoolProject.XUnitTest/"]
+
+RUN dotnet restore "SchoolProject.Api/SchoolProject.Api.csproj"
+RUN dotnet restore "SchoolProject.Core/SchoolProject.Core.csproj"
+RUN dotnet restore "SchoolProject.Data/SchoolProject.Data.csproj"
+RUN dotnet restore "SchoolProject.Infrustructure/SchoolProject.Infrustructure.csproj"
+RUN dotnet restore "SchoolProject.Service/SchoolProject.Service.csproj"
+RUN dotnet restore "SchoolProject.XUnitTest/SchoolProject.XUnitTest.csproj"
+
+COPY . .
+RUN dotnet publish "SchoolProject.Api/SchoolProject.Api.csproj" -c Release -o /app/publish /p:UseAppHost=false
+
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
+WORKDIR /app
+EXPOSE 8080
+
+# نقل الملفات الجاهزة من مرحلة البناء
+COPY --from=build-dev /app/publish .
+ENTRYPOINT ["dotnet", "SchoolProject.Api.dll"]

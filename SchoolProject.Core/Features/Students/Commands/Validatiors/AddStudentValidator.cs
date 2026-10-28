@@ -23,7 +23,7 @@ namespace SchoolProject.Core.Features.Students.Commands.Validatiors
             _localizer = localizer;
             ApplyValidationsRules();
             ApplyCustomValidationsRules();
-            _departmentService=departmentService;
+            _departmentService = departmentService;
         }
         #endregion
 
@@ -50,6 +50,7 @@ namespace SchoolProject.Core.Features.Students.Commands.Validatiors
             RuleFor(x => x.NameAr)
                 .MustAsync(async (Key, CancellationToken) => !await _studentService.IsNameArExist(Key))
                 .WithMessage(_localizer[SharedResourcesKeys.IsExist]);
+
             RuleFor(x => x.NameEn)
                .MustAsync(async (Key, CancellationToken) => !await _studentService.IsNameEnExist(Key))
                .WithMessage(_localizer[SharedResourcesKeys.IsExist]);

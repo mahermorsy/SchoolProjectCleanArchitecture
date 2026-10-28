@@ -1,0 +1,22 @@
+services:
+  sql-SchoolProject-Db:
+    container_name: sql-SchoolProject-Db
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Security@26
+    ports:
+      - 8201:1433
+
+  SchoolProject-Clean-Architecture:
+    container_name: SchoolPro-ClArch
+    image: mahermorsy/schoolprojectdock:v2.0
+    build:
+      context: .
+      dockerfile: DockerFile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - 8200:8080
+    depends_on:
+      - sql-SchoolProject-Db

@@ -69,7 +69,7 @@ namespace SchoolProject.Infrustructure.InfrastructureBases
         {
             foreach (var entity in entities)
             {
-                _dbContext.Entry(entity).State = EntityState.Deleted;
+                _dbContext.Entry(entity).State = EntityState.Detached;
             }
             await _dbContext.SaveChangesAsync();
         }

@@ -4,6 +4,8 @@ using EntityFrameworkCore.EncryptColumn.Util;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 using SchoolProject.Data.Entities;
 using SchoolProject.Data.Entities.Identity;
 using SchoolProject.Data.Entities.Views;
@@ -21,6 +23,30 @@ namespace SchoolProject.Infrustructure.Data
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options)
         {
             _encryptionProvider=new GenerateEncryptionProvider("8a4dcaaec64d412380fe4b02193cd26f");
+             
+        try
+        {
+            var databaseCreator = Database.GetService<IDatabaseCreator>() as RelationalDatabaseCreator;
+            if (databaseCreator != null)
+            {
+                if (!databaseCreator.CanConnect())
+                {
+                    databaseCreator.Create();
+                }
+
+                if (!databaseCreator.HasTables())
+                {
+                    databaseCreator.CreateTables();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+
+
+        
         }
         public DbSet<User> User { get; set; }
         public DbSet<Department> departments { get; set; }

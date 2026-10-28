@@ -97,8 +97,9 @@ namespace SchoolProject.Service.Implementations
 
         public IQueryable<Student> FilterStudentPaginatedQuerable(StudentOrderingEnum orderingEnum, string search)
         {
-            var querable = _studentRepository.GetTableNoTracking().Include(x => x.Department).AsQueryable();
-            if (search!=null)
+            IQueryable<Student> querable = _studentRepository.GetTableNoTracking().Include(x => x.Department).AsQueryable();
+
+            if (!string.IsNullOrEmpty(search))
             {
                 querable = querable.Where(x => x.NameAr.Contains(search)||x.Address.Contains(search));
             }
