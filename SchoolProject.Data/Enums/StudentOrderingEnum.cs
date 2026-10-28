@@ -7,4 +7,10 @@
         Address = 2,
         DepartmentName = 3
     }
+
+    public enum StudentOrderingDirectionEnum
+    {
+        Ascending = 0,
+        Descending = 1
+    }
 }
