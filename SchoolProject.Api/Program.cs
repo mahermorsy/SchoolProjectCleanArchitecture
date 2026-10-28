@@ -78,7 +78,6 @@ builder.Services.AddCors(options =>
                           policy.AllowAnyOrigin();
                       });
 });
-
 #endregion
 
 builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
