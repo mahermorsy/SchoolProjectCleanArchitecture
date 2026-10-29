@@ -13,4 +13,11 @@
         Ascending = 0,
         Descending = 1
     }
+
+    public enum StudentFilterEnum
+    {
+        Name = 0,
+        Address = 1,
+        DepartmentName = 2
+    }
 }
