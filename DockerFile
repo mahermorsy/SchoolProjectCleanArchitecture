@@ -22,7 +22,6 @@ RUN dotnet publish "SchoolProject.Api/SchoolProject.Api.csproj" -c Release -o /a
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
 WORKDIR /app
 EXPOSE 8080
-
 # نقل الملفات الجاهزة من مرحلة البناء
 COPY --from=build-dev /app/publish .
 ENTRYPOINT ["dotnet", "SchoolProject.Api.dll"]
